@@ -1,0 +1,10 @@
+numpy==1.22.3
+pycuda==2021.1
+pyyaml==6.0.1
+hydra-core==1.3.2
+loguru
+shapely==2.0.1
+tqdm
+# Below should not be installed manually by pip.
+# instead, install via apt package manager.
+# tensorrt==8.2.5.1

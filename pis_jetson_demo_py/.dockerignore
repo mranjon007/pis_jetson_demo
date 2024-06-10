@@ -1,0 +1,7 @@
+\.*
+models/**/*.engine
+models/**/*.onnx
+models/**/*.cache
+**/__pycache__/
+videos/
+**/*.mp4

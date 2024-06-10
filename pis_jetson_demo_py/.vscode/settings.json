@@ -1,0 +1,7 @@
+{
+    "python.linting.flake8Enabled": false,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "remote.autoForwardPorts": false,
+    "csv-preview.capitalizeHeaders": false
+}

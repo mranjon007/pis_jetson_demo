@@ -1,0 +1,94 @@
+# PMS 3차년도 데이터셋 레시피
+# 1. OD - 클래스 총 14개, PIS 3차년도 데이터셋 전처리 Type01 기준
+# 2. HeadPose - 결과값 총 3개 (yaw, pitch, roll), Pretrained with RGB image (AFLW2000)
+# 3. HumanPose - 관절 총 11개, PIS 2차년도 데이터셋 기준
+
+defaults:
+  - _self_
+  - .@recipe.pipeline: pipeline
+  - .@recipe.engine.tracker: tracker
+
+metaVersion: 2
+recipe:
+  general:
+    verbose: False  # Showe verbose log recorded with logger.debug()
+
+  pipeline:  # Defined in pipeline.yaml
+
+  engine:
+    tracker:  # Defined in tracker.yaml
+      type: l2
+      options:
+        threshold: 0.3
+        time_to_match: 4
+        time_to_live: 10
+
+    detector:
+      type: yolo_nas_s
+      preprocess:
+        input_width: 320     # Model input width (Must follow engine spec)
+        input_height: 320    # Model input height (Must follow engine spec)
+        padded_resize: True  # Reserve aspect ratio and pad with grey value
+      models:
+        with_parser: models/engine/20230912_121359-Yolo_NAS_S_PMS3rd-fulltrain-withcache.with-parser.fp16_b1_b1_trt8205.engine
+        without_parser: null
+      postprocess:
+        use_embedded_parser: True  # non-embedded parser are not supported
+        class_separated_nms: True  # Class-separated NMS (Group person, eye classes first)
+        classes:
+          - men_young
+          - women_young
+          - men_middle
+          - women_middle
+          - men_old
+          - women_old
+          - face
+          - eye_open
+          - eye_closed
+          - cigarette
+          - phone
+          - mask
+          - bottle
+          - seat_belt
+        conf_thresh: 0.55
+        nms_iou_thresh: 0.6
+
+    headpose:
+      type: sixdrepnet
+      preprocess:
+        input_width: 224     # Model input width (Must follow engine spec)
+        input_height: 224    # Model input height (Must follow engine spec)
+        padded_resize: False # Not supported
+      models:
+        with_parser: models/engine/20230816-6DRepNet_300W_LP_AFLW2000.with-parser.fp16_b1_b1_trt8205.engine
+        without_parser: models/engine/20230816-6DRepNet_300W_LP_AFLW2000.without-parser.fp16_b1_b1_trt8205.engine
+      postprocess:
+        use_embedded_parser: True
+        classes:
+          - yaw
+          - pitch
+          - roll
+
+    humanpose:
+      type: sbpnet
+      preprocess:
+        input_width: 192     # Model input width (Must follow engine spec)
+        input_height: 256    # Model input height (Must follow engine spec)
+        padded_resize: False # Not supported
+      models:
+        humanpose: models/engine/20221123-SBP_PMS-epoch99.humanpose.fp16_b1_b1_trt8205.engine
+      postprocess:
+        use_embedded_parser: True
+        classes:
+          - nose
+          - left_eye
+          - right_eye
+          - left_ear
+          - right_ear
+          - left_shoulder
+          - right_shoulder
+          - left_elbow
+          - right_elbow
+          - left_wrist
+          - right_wrist
+        conf_thresh: 0.25

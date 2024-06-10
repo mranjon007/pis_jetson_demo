@@ -1,0 +1,19 @@
+# Dockerfile for Development Environment (PC)
+#
+# @author An Jung In <jian@fssolution.co.kr>
+
+FROM nvcr.io/nvidia/tensorrt:22.05-py3
+
+RUN set -ex &&\
+    \
+    sed -i "s/archive.ubuntu.com/mirror.kakao.com/g" /etc/apt/sources.list &&\
+    apt-get -qq update &&\
+    apt-get -qq install -y \
+        python3-opencv \
+        libopencv-dev \
+        gstreamer1.0-plugins-ugly \
+        gstreamer1.0-rtsp &&\
+    rm -rf /var/lib/apt/lists
+
+# Not copying files (development environment)
+WORKDIR /opt/pis

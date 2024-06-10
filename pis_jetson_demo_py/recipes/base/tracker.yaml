@@ -1,0 +1,8 @@
+# Default pipeline values
+# - Note that value filled with "???" is intended for use (special placeholder)!
+
+type: ???  # Tracker type, one of ["l2", "iou", "none"]
+options:
+  threshold: null
+  time_to_match: null
+  time_to_live: null

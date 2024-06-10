@@ -1,0 +1,78 @@
+defaults:
+  - base@hydra: hydra
+  - base@_global_: pms3-v3-17k-exp01
+  - event@event_params: pms3-v1
+  - _self_
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+  
+
+recipe:  # @see base/pms3.yaml
+  general:
+    verbose: False
+
+  pipeline:  # @see base/pipeline.yaml
+    source:
+      type: video_folder
+      url: None  # Will be set inside the code
+      options:
+        loop: False
+        sync: False
+        sequential: True  # Mandatory
+    sink:
+      type: x11
+      url: None  # Will be set inside the code
+      options:
+        engine: default
+    
+    draw_options:
+      latency_info: True
+      untracked_items: False
+      headpose_item_values: True
+      headpose_passenger: True
+      box_track_info: True
+      bboxes: True
+      headpose: True
+      humanpose: True
+      legends: False
+        
+  engine:
+    tracker:
+      type: iou
+      options:
+        threshold: 0.2
+        time_to_match: 4
+        time_to_live: 10
+
+# @see event/pms3-v1.yaml
+event_params:
+  driver:
+    drowsiness:
+      ttc: 12
+      tte: 5
+    distraction:
+      ttc: 3
+      tte: 20
+    faint:
+      ttc: 12
+      tte: 5
+      face_shoulder_thresh: 0.02
+      shoulder_collapse_thresh: 0.1
+      nose_mean_thresh: 0.08
+    negative_wheelgrab:
+      ttc: 12
+      tte: 5
+
+  passenger:
+    drowsiness:
+      ttc: 12
+      tte: 5
+    distraction:
+      ttc: 3
+      tte: 20
+    faint:
+      ttc: 12
+      tte: 5
+      face_shoulder_thresh: 0.02
+      shoulder_collapse_thresh: 0.1
+      nose_mean_thresh: 0.08

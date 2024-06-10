@@ -1,0 +1,35 @@
+defaults:
+  - base@hydra: hydra
+  - base@_global_: pms3-v2-17k
+  - _self_
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled
+
+# 
+# PMS 3차년도 데이터셋 (전처리 Type01) 학습 모델 비디오 테스트 레시피
+# 
+recipe:  # @see base/pms3.yaml
+  general:
+    verbose: False
+
+  pipeline:  # @see base/pipeline.yaml
+    source:
+      type: live
+      url: rtsp://127.0.0.1:8554/livecamera
+      options:
+        loop: False
+        sync: True
+        sequential: False
+    sink:
+      type: rtsp
+      url: "appsrc ! videoconvert ! video/x-raw,format=I420 ! x264enc speed-preset=ultrafast bitrate=2000 key-int-max=15 ! video/x-h264,profile=baseline ! rtspclientsink location=rtsp://172.30.1.254:8554/livestream"
+      options:
+        engine: gstreamer
+
+  engine:
+    tracker:
+      type: l2
+      options:
+        threshold: 0.3
+        time_to_match: 4
+        time_to_live: 10

@@ -1,0 +1,9 @@
+# Hydra global configuration
+# - Do not save outputs into directories
+# - Do not chdir() to hydra-created output folder
+
+output_subdir: null
+run:
+  dir: .
+job:
+  chdir: False

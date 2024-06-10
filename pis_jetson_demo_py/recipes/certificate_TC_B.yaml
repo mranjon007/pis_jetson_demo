@@ -1,0 +1,81 @@
+defaults:
+  - base@hydra: hydra
+  - base@_global_: pms3-v3-17k-exp01
+  - event@event_params: pms3-v1
+  - _self_
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+  
+
+recipe:  # @see base/pms3.yaml
+  general:
+    verbose: False
+
+  pipeline:  # @see base/pipeline.yaml
+    source:
+      type: video_folder
+      url: None  # Will be set inside the code
+      options:
+        loop: False
+        sync: False
+        sequential: True  # Mandatory
+    sink:
+      type: x11
+      url: None  # Will be set inside the code
+      options:
+        engine: default
+    
+    draw_options:
+      latency_info: True
+      untracked_items: False
+      headpose_item_values: True
+      headpose_passenger: True
+      box_track_info: True
+      bboxes: True
+      headpose: True
+      humanpose: True
+      legends: False
+        
+  engine:
+    tracker:
+      type: iou
+      options:
+        threshold: 0.2
+        time_to_match: 4
+        time_to_live: 10
+
+# @see event/pms3-v1.yaml
+event_params:
+  driver:
+    phone_answer:
+      ttc: 3
+      tte: 10
+      center_abs_distance_thresh: 350
+    smoke:
+      ttc: 3
+      tte: 10
+      center_abs_distance_thresh: 350
+    beltoff:
+      ttc: 3
+      tte: 10
+    drink:
+      ttc: 12
+      tte: 5
+      center_abs_distance_thresh: 350
+
+  passenger:
+    phone_answer:
+      ttc: 3
+      tte: 10
+      center_abs_distance_thresh: 200
+    smoke:
+      ttc: 3
+      tte: 10
+      center_abs_distance_thresh: 200
+    beltoff:
+      ttc: 3
+      tte: 10
+    drink:
+      ttc: 12
+      tte: 5
+      center_abs_distance_thresh: 200

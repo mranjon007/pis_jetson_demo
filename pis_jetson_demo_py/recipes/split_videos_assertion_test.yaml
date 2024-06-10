@@ -1,0 +1,46 @@
+defaults:
+  - base@hydra: hydra
+  - base@_global_: pms3-v3-17k-exp01
+  - event@event_params: pms3-v1
+  - _self_
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+  
+
+recipe:  # @see base/pms3.yaml
+  general:
+    verbose: False
+
+  pipeline:  # @see base/pipeline.yaml
+    source:
+      type: video_folder
+      url: video_inputs/5SEC_PASSENGERCNT_PIS3
+      options:
+        loop: False
+        sync: False
+        sequential: True  # Mandatory
+    sink:
+      type: video_folder
+      url: video_outputs/5SEC_PASSENGERCNT_PIS3
+      options:
+        engine: default
+    
+    draw_options:
+      untracked_items: True
+      headpose_item_values: True
+      headpose_passenger: True
+      box_track_info: True
+      bboxes: True
+      headpose: True
+      humanpose: True
+        
+  engine:
+    tracker:
+      type: iou
+      options:
+        threshold: 0.2
+        time_to_match: 4
+        time_to_live: 10
+
+# @see event/pms3-v1.yaml
+event_params: ???

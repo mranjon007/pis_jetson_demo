@@ -1,0 +1,43 @@
+defaults:
+  - base@hydra: hydra
+  - base@_global_: pms3-v3-17k-exp01
+  - _self_
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+  
+# 
+# PMS 3차년도 데이터셋 (전처리 Type01) 학습 모델 비디오 테스트 레시피
+# 
+recipe:  # @see base/pms3.yaml
+  general:
+    verbose: False
+
+  pipeline:  # @see base/pipeline.yaml
+    source:
+      type: file
+      url: video_inputs/khj.avi
+      options:
+        loop: False
+        sync: False
+        sequential: True
+    sink:
+      type: file
+      url: video_outputs/khj.output.mp4
+      options:
+        engine: default
+    
+    draw_options:
+      untracked_items: True
+      headpose_item_values: True
+      box_track_info: True
+      bboxes: True
+      headpose: True
+      humanpose: True
+        
+  engine:
+    tracker:
+      type: iou
+      options:
+        threshold: 0.2
+        time_to_match: 4
+        time_to_live: 10

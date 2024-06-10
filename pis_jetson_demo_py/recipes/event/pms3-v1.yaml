@@ -1,0 +1,62 @@
+# ~2023/10/10 event_processors params
+
+driver:
+  phone_answer:
+    ttc: 3
+    tte: 10
+    center_abs_distance_thresh: 350
+  smoke:
+    ttc: 3
+    tte: 10
+    center_abs_distance_thresh: 350
+  beltoff:
+    ttc: 3
+    tte: 10
+  distraction:
+    ttc: 3
+    tte: 20
+  drink:
+    ttc: 12
+    tte: 5
+    center_abs_distance_thresh: 350
+  drowsiness:
+    ttc: 12
+    tte: 5
+  faint:
+    ttc: 12
+    tte: 5
+    face_shoulder_thresh: 0.02
+    shoulder_collapse_thresh: 0.1
+    nose_mean_thresh: 0.08
+  negative_wheelgrab:
+    ttc: 12
+    tte: 5
+
+passenger:
+  phone_answer:
+    ttc: 3
+    tte: 10
+    center_abs_distance_thresh: 200
+  smoke:
+    ttc: 3
+    tte: 10
+    center_abs_distance_thresh: 200
+  beltoff:
+    ttc: 3
+    tte: 10
+  distraction:
+    ttc: 3
+    tte: 20
+  drink:
+    ttc: 12
+    tte: 5
+    center_abs_distance_thresh: 200
+  drowsiness:
+    ttc: 12
+    tte: 5
+  faint:
+    ttc: 12
+    tte: 5
+    face_shoulder_thresh: 0.02
+    shoulder_collapse_thresh: 0.1
+    nose_mean_thresh: 0.08

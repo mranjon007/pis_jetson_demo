@@ -1,0 +1,31 @@
+# Default pipeline values
+# - Note that value filled with "???" is intended for use (special placeholder)!
+#
+# Source = Input = 입력부
+# Sink = Output = 출력부
+
+source:
+  type: ??? # One of ["camera", "camera_ov2311", "live", "file", "video_folder"]
+  url: ??? # URL of input
+  options:
+    sync: ??? # Sync detection thread for next frame to arrive (for parallel)
+    loop: ??? # Loop input
+    sequential: ??? # Do not use parallel thread for VideoCapture
+    force_resize: False # Force resize input image to 1600x1300 (ratio nonreserved) before any processing
+sink:
+  type: ??? # One of ["x11", "rtsp", "file"]
+  url: ??? # URL of input
+  options:
+    engine: ??? # One of ["default", "gstreamer"]
+draw_options:
+  latency_info: False  # Draw latency informations
+  event_stats: True # Draw event statistics
+  untracked_items: False # Draw untracked items (defaults to False only except when no tracker)
+  headpose_item_values: True # Headpose item (Pitch, Yaw, Roll) values
+  headpose_passenger: True  # Headpose draw passenger
+  box_track_info: True # BBOX pos/size and Tracker info
+  backseat: False # Draw backseat headpose/humanpose
+  bboxes: True # BBOX rectangles
+  headpose: True # Head pose cubes
+  humanpose: True # Human pose rigid
+  legends: True # Legends on right top corner

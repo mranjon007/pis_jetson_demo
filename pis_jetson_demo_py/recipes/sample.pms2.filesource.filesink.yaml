@@ -1,0 +1,35 @@
+defaults:
+  - base@hydra: hydra
+  - base@_global_: pms2
+  - _self_
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+
+# 
+# PMS 3차년도 데이터셋 (전처리 Type01) 학습 모델 비디오 테스트 레시피
+# 
+recipe:  # @see base/pms3.yaml
+  general:
+    verbose: False
+
+  pipeline:  # @see base/pipeline.yaml
+    source:
+      type: file
+      url: video_inputs/20230619_102442_Video_USB.avi
+      options:
+        loop: False
+        sync: False
+        sequential: True
+    sink:
+      type: file
+      url: video_outputs/20230619_102442_Video_USB.mp4
+      options:
+        engine: default
+
+  engine:
+    tracker:
+      type: l2
+      options:
+        threshold: 0.3
+        time_to_match: 4
+        time_to_live: 10
